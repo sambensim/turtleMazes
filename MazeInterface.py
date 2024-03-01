@@ -11,14 +11,18 @@ def main():
     print('drawing maze...')
     MazeGen.drawMaze(connections,rows,columns)
     print('maze drawn')
-    print('\nEnter \'s\' to view solution or \'p\' to view generation path: ')
+    print('\nEnter \'s\' to view solution, \'d\' to view solution and animated search, \'p\' to view generation path: ')
     answer = input()
-    if answer=='s':
+    if answer=='s' or 'd':
         print('\nsolving maze...')
-        path=AStarInGrid.AStar(AStarInGrid.connectionDict(connections),0,0,rows*columns-1,columns)
+        if answer=='s':
+            draw = False
+        else:
+            draw = True
+        path=AStarInGrid.RecursiveSearch(AStarInGrid.connectionDict(connections),0,0,rows*columns-1,columns,draw=draw)
         print('maze solved')
         print('drawing solution...')
-        AStarInGrid.drawSolution(path,rows,columns)
+        AStarInGrid.drawSolution(path,columns)
         print('solution drawn')
     elif answer=='p':
         print('drawing paths...')
