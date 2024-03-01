@@ -99,6 +99,7 @@ def depthFirst(currentcell,neighbors,visited): #recursive function that performs
             depthFirst(cell,neighbors,visited)
 
 def drawPerpendicular(a,b,columns,cellsize,t): #given two cells, draws a line perpendicular to them (a wall inbetween them)
+    t.speed('fastest')
     ax,ay=a%columns,a//columns
     bx,by=b%columns,b//columns
     if ax!=bx:
@@ -115,6 +116,7 @@ def drawPerpendicular(a,b,columns,cellsize,t): #given two cells, draws a line pe
         t.setx((ax-0)*cellsize)
 
 def drawConnection(a,b,columns,cellsize,t): #given two cells, draws a line between their centers
+    t.speed('fastest')
     ax,ay=a%columns,a//columns
     bx,by=b%columns,b//columns
     t.penup()
