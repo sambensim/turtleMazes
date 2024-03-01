@@ -1,5 +1,8 @@
 # turtleMazes
 Python scripts to generate mazes using Depth-First and Turtles and solve them with A* Pathfinding
+### Usage
+- These programs use random, sys, and turtles
+- Once all three are installed, run MazeInterface.py for the easiest generation
 ### Generating
 > All my knowledge on this topic comes from [Reducible's Amazing Depth First Search Video](https://www.youtube.com/watch?v=PMMc4VsIacU)
 ### Solving
