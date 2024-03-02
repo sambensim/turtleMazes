@@ -3,12 +3,12 @@
 from sys import setrecursionlimit
 import MazeGen, turtle
 def main():
-    rows = 50
+    rows = 100
     columns = rows
     connections = MazeGen.generateMaze(rows,columns)
     MazeGen.drawMaze(connections,columns,rows)
     connection_dict = connectionDict(connections)
-    path=RecursiveSearch(connection_dict,0,0,rows*columns-1,columns,draw=True)
+    path=AStar(connection_dict,0,rows*columns-1,columns,draw=False)
     drawSolution(path,columns)
     turtle.done()
 
@@ -66,20 +66,40 @@ def cost(start,current,goal,columns): #calculates the cost of a cell for A*
     manhattanGoal = abs(current%columns-goal%columns)+abs(current//columns-goal//columns)
     return fromStart+manhattanGoal
 
-def AStar(connection_dict,start,goal,columns,frontier=[],draw=False):
-    current,path_found = start, False
-    #how can I track the path as it is traced?
-    #keep track of parent so the path can be traced backwards
+def AStar(connection_dict,start,goal,columns,draw=False):
+    if draw:
+        t=turtle.Turtle()
+        t.hideturtle()
+        t.color('blue')
+        window=turtle.Screen()
+        window.tracer(60)
+    path_found = False
+    current = start
+    frontier_dict = {}
     while not path_found:
         for cell in connection_dict[current]:
+            if cell not in frontier_dict:
+                frontier_dict[cell]=[cost(start,cell,goal,columns),current]
+                if draw:
+                    MazeGen.drawConnection(current,cell,columns,1,t)
             if cell==goal:
                 path_found = True
-            frontier.append(cell,cost(start,cell,goal,columns))
         min=False
-        for cell in frontier:
-            if min==False or cell[1]<min[1]:
-                min=cell
-        current = min
+        for cell in frontier_dict:
+            if frontier_dict[cell][0]!=False and (min==False or frontier_dict[cell][0]<min[1]):
+                min=(cell,frontier_dict[cell][0])
+        current = min[0]
+        frontier_dict[current][0]=False #I should probably remove it from the frontier and add to another list to increase speed
+
+    path = []
+    path_found=False
+    current = goal
+    while not path_found:
+        path.append(current)
+        current=frontier_dict[current][1]
+        if current == start:
+            path_found=True
+    return path
 
 if __name__ == '__main__':
     main()
